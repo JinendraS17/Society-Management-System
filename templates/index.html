@@ -21,9 +21,14 @@
     {% if 'token' in session %}
         <p>Hello, {{ session['username'] }}!</p>
         <a href="{{ url_for('logout') }}">Logout</a>
+
+        {% if is_admin %}
+            <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+        {% endif %}
     {% else %}
         <a href="{{ url_for('login') }}">Login</a>
         <a href="{{ url_for('register') }}">Register</a>
     {% endif %}
 </body>
 </html>
+
