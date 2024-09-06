@@ -30,6 +30,14 @@ def decode_jwt_token(token):
 
 @app.route('/')
 def index():
+    username = session.get('username')
+    if username:
+        user = mongo.db.User.find_one({'username': username})
+
+        if user and user.get('is_admin') == 1:
+            return render_template('index.html', is_admin=True)
+        else:
+            return render_template('index.html', is_admin=False)
     return render_template('index.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -92,6 +100,10 @@ def logout():
     session.pop('username', None)
     flash('Logged out successfully')
     return redirect(url_for('index'))
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    return "admin"
 
 
 @app.route('/protected', methods=['GET'])
